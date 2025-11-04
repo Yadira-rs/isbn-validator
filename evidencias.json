@@ -1,0 +1,128 @@
+{
+  "actividad": "V",
+  "titulo": "Pruebas básicas de código de software",
+  "subtitulo": "De lo básico a lo robusto: diseño y ejecución de pruebas para un validador de ISBN",
+  "autor": "M.A. Raúl Iván Herrera González",
+  "secciones": [
+    {
+      "id": 1,
+      "titulo": "Propósito y resultados de aprendizaje",
+      "proposito": "Que el alumno demuestre dominio operativo y conceptual de las pruebas básicas (unitarias, caja negra/caja blanca, particiones de equivalencia, análisis de fronteras y uso de test doubles) aplicándolas de forma rigurosa a un módulo realista y pequeño, integrando herramientas TIC (control de versiones, CI, cobertura).",
+      "resultados_aprendizaje": [
+        "Diseñar casos de prueba a partir de requerimientos (caja negra) y del código (caja blanca).",
+        "Aplicar particiones de equivalencia y fronteras para crear suites mínimas pero potentes.",
+        "Implementar pruebas unitarias con fixtures y dobles de prueba (p. ej., stubs para I/O).",
+        "Ejecutar y reportar cobertura (líneas/branches) y explicar gaps.",
+        "Integrar pruebas en CI (GitHub Actions, GitLab CI, etc.).",
+        "Comunicar resultados en un reporte técnico reproducible."
+      ]
+    },
+    {
+      "id": 2,
+      "titulo": "Contexto del problema (ejemplo obligatorio)",
+      "modulo": "isbn.py o isbn.js",
+      "funciones_puras": [
+        "normalize_isbn(s: string) -> string: Elimina espacios y guiones; valida que sólo queden dígitos (y ‘X’ posible al final en ISBN-10).",
+        "is_valid_isbn10(s: string) -> bool: Regla de ISBN-10 con pesos 10..1; válido si sum % 11 == 0. ‘X’ solo como último carácter.",
+        "is_valid_isbn13(s: string) -> bool: Regla de ISBN-13 con pesos alternos 1,3; válido si sum % 10 == 0.",
+        "detect_isbn(s: string) -> \"ISBN-10\" | \"ISBN-13\" | \"INVALID\": Normaliza y decide según longitud y validez."
+      ],
+      "restricciones": [
+        "No dependas de librerías externas.",
+        "Maneja entradas vacías/nulas y caracteres ilegales.",
+        "El módulo debe ser determinista y sin efectos secundarios."
+      ]
+    },
+    {
+      "id": 3,
+      "titulo": "Requerimientos de prueba (lo que debe cubrir tu suite)",
+      "tipos_de_prueba": [
+        "Caja negra: Diseñar casos a partir de las reglas (sin leer el código).",
+        "Particiones de equivalencia: ISBN-10 {válidos con dígitos, válidos con ‘X’ final, inválidos por checksum, inválidos por longitud, inválidos por carácter}, ISBN-13 {válidos, inválidos por checksum, inválidos por longitud, inválidos por carácter}.",
+        "Análisis de fronteras: longitudes 9/10/11 (ISBN-10) y 12/13/14 (ISBN-13); cadena vacía y máxima razonable con separadores.",
+        "Caja blanca: Cubrir todas las ramas (incluida ‘X’ al final y rutas de error).",
+        "Dobles de prueba: Usar stubs/mocks si introduces colaboradores (p. ej., logger).",
+        "Property-based (recomendado): Idempotencia de normalización y estabilidad ante formatos equivalentes."
+      ]
+    },
+    {
+      "id": 4,
+      "titulo": "Recursos TIC requeridos",
+      "recursos": [
+        "Repositorio en GitHub/GitLab con issues y branches.",
+        "CI/CD que ejecute pruebas y genere cobertura (artefacto o enlace).",
+        "Reporte de cobertura (HTML/LCOV).",
+        "Editor/IDE a elección (VS Code recomendado)."
+      ]
+    },
+    {
+      "id": 5,
+      "titulo": "Instrucciones paso a paso",
+      "pasos": [
+        "Plan de pruebas (1–2 páginas): objetivo, alcance, supuestos, riesgos; tabla de particiones y fronteras; métricas objetivo (≥ 90% líneas, ≥ 85% branches).",
+        "Implementa el módulo conforme al contrato.",
+        "Diseña la suite de pruebas: happy/unhappy paths, fixtures, ≥ 2 propiedades, ≥ 1 mock/stub.",
+        "Ejecuta cobertura y analiza gaps (qué rutas faltan y por qué).",
+        "Configura CI/CD que corra en push/PR y publique cobertura.",
+        "Reporte técnico (máx. 6 páginas): trazabilidad requisito→caso→test, evidencias de CI y cobertura, discusión crítica.",
+        "README del repo: cómo correr pruebas y ver cobertura; decisiones y supuestos; badge de CI (opcional)."
+      ]
+    },
+    {
+      "id": 6,
+      "titulo": "Entregables",
+      "lista_entregables": [
+        "Repositorio con código, pruebas, artefactos de cobertura, README y workflow de CI.",
+        "Plan de pruebas (PDF/MD).",
+        "Reporte técnico (PDF/MD) con evidencias y discusión crítica.",
+        "Archivo evidencias.json con métricas (coverage_lines, coverage_branches, tests_total, tests_passed, ci_status, properties_implemented)."
+      ]
+    },
+    {
+      "id": 7,
+      "titulo": "Rúbrica de evaluación (100 puntos)",
+      "criterios": [
+        {"criterio": "Plan de pruebas", "ponderacion": 15, "excelente": "Particiones y fronteras completas; trazabilidad clara; riesgos y métricas definidas."},
+        {"criterio": "Cobertura efectiva", "ponderacion": 20, "excelente": "≥90% líneas y ≥85% branches; justificación de gaps impecable."},
+        {"criterio": "Calidad de casos (caja negra/blanca)", "ponderacion": 20, "excelente": "Casos mínimos y potentes; cubren caminos y errores; diseño sistemático."},
+        {"criterio": "Property-based & dobles", "ponderacion": 15, "excelente": "≥2 propiedades útiles y ≥1 doble bien aplicado; hallazgos discutidos."},
+        {"criterio": "CI/CD y reproducibilidad", "ponderacion": 10, "excelente": "CI verde; evidencias claras; pasos reproducibles."},
+        {"criterio": "Reporte técnico", "ponderacion": 15, "excelente": "Análisis crítico sólido; evidencias claras; narrativa concisa."},
+        {"criterio": "Calidad del código", "ponderacion": 5, "excelente": "Limpio, legible, pruebas mantenibles, buena organización."}
+      ]
+    },
+    {
+      "id": 8,
+      "titulo": "Plantilla de carpetas sugerida",
+      "estructura_archivos": [
+        "./",
+        "├─ src/",
+        "│  └─ isbn.(py|js)",
+        "├─ tests/",
+        "│  ├─ test_isbn10.(py|js)",
+        "│  ├─ test_isbn13.(py|js)",
+        "│  └─ test_properties.(py|js)",
+        "├─ .github/workflows/ci.yml (o .gitlab-ci.yml)",
+        "├─ README.md",
+        "├─ plan_pruebas.md",
+        "├─ reporte_tecnico.md",
+        "└─ evidencias.json"
+      ]
+    },
+    {
+      "id": 11,
+      "titulo": "Checklist de entrega",
+      "checklist": [
+        "Reglas reflejadas en pruebas.",
+        "Particiones y fronteras tabuladas.",
+        "≥ 90% líneas, ≥ 85% branches (o justificado).",
+        "≥ 2 propiedades y ≥ 1 doble.",
+        "CI ejecuta pruebas y publica cobertura.",
+        "evidencias.json completo.",
+        "Reporte técnico con análisis crítico.",
+        "README con instrucciones y badge de CI (opcional)."
+      ]
+    }
+  ],
+  "nota": "El glosario y las sugerencias de casos de prueba no exhaustivas se omitieron para mantener el JSON más conciso, pero se pueden incluir si es necesario."
+}
